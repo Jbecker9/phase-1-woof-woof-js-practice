@@ -15,8 +15,7 @@ function renderDog(dog){
     const span = document.createElement("span")
     span.innerHTML = `${dog.name}`
     dogBar.append(span)
-    span.addEventListener("click", (e) => {
-        e.preventDefault()
+    span.addEventListener("click", () => {
         const dogInfo = document.getElementById("dog-info")
         dogInfo.innerHTML = ""
         const h2 = document.createElement("h2")
@@ -33,28 +32,31 @@ function renderDog(dog){
         else if(dog.isGoodDog === false){
             button.innerText = "Bad Dog!"
         }
-        button.addEventListener("click", (e) =>{
-            e.preventDefault()
+        button.addEventListener("click", () =>{
             console.log(dog.isGoodDog)
             if(dog.isGoodDog === true){
                 dog.isGoodDog = false
                 button.InnerText = "Bad Dog!"
+                updateGoodDog(dog)
             }
             else if(dog.isGoodDog === false){
                 dog.isGoodDog = true
-                button.innerText = "Good Dog!" 
+                button.innerText = "Good Dog!"
+                updateGoodDog(dog) 
             }
             console.log(dog.id)
         })
     })
 }
 
-// fetch(`http://localhost:3000/pups/${dog.id}`, {
-//             method: "PATCH",
-//             headers: {
-//                 "Content-Type": "application/json",
-//                 Accept: "application/json"
-//                 },
-//             body: JSON.stringify(dogObj)
-//             })
-//             .then(response => response.json())
+function updateGoodDog(dog){
+fetch(`http://localhost:3000/pups/${dog.id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                },
+            body: JSON.stringify(dog)
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+}
